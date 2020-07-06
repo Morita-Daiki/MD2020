@@ -1,4 +1,3 @@
-stream_buffer.c:219:23:xStreamBufferGenericCreate	48	static,ignoring_inline_asm
 stream_buffer.c:271:23:xStreamBufferGenericCreateStatic	56	static,ignoring_inline_asm
 stream_buffer.c:335:6:vStreamBufferDelete	24	static,ignoring_inline_asm
 stream_buffer.c:368:12:xStreamBufferReset	48	static,ignoring_inline_asm

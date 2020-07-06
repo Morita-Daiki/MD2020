@@ -21,8 +21,9 @@
 #include "tim.h"
 
 /* USER CODE BEGIN 0 */
-TIM_MasterConfigTypeDef sMasterConfig = { 0 };
-TIM_OC_InitTypeDef sConfigOC = { 0 };
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_Encoder_InitTypeDef sConfig = {0};
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim2;
@@ -31,8 +32,8 @@ TIM_HandleTypeDef htim3;
 /* TIM2 init function */
 void MX_TIM2_Init(void)
 {
-  TIM_Encoder_InitTypeDef sConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
+//  TIM_Encoder_InitTypeDef sConfig = {0};
+//  TIM_MasterConfigTypeDef sMasterConfig = {0};
 
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 0;
@@ -64,8 +65,8 @@ void MX_TIM2_Init(void)
 /* TIM3 init function */
 void MX_TIM3_Init(void)
 {
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_OC_InitTypeDef sConfigOC = {0};
+//  TIM_MasterConfigTypeDef sMasterConfig = {0};
+//  TIM_OC_InitTypeDef sConfigOC = {0};
 
   htim3.Instance = TIM3;
   htim3.Init.Prescaler = 0;
@@ -246,6 +247,12 @@ void PWM_4_Out(int *duty) {
 		if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1+i*4) != HAL_OK)
 			Error_Handler();
 	}
+}
+void Enc_Start(){
+	HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
+}
+uint32_t Enc_Read(){
+	return TIM2->CNT;
 }
 /* USER CODE END 1 */
 

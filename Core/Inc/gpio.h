@@ -38,8 +38,7 @@
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-void LED_Status(uint8_t,uint8_t);
-void LED_Go2Go(int);
+void LED_Go2Go(int x);
 int SW_Get_ID();
 /* USER CODE END Prototypes */
 

@@ -47,8 +47,18 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, PA2_Pin|PA15_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, RA_BK_Pin|LD5_11_Pin|LD4_10_Pin|LD3_9_Pin 
                           |LD2_8_Pin|LD1_7_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PAPin PAPin */
+  GPIO_InitStruct.Pin = PA2_Pin|PA15_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PAPin PAPin PAPin */
   GPIO_InitStruct.Pin = SW4_Pin|SW3_Pin|SW2_Pin;
@@ -68,14 +78,6 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
-void LED_Status(uint8_t sign, uint8_t bits) { //sign=0:blue,sign=1:red
-	HAL_GPIO_WritePin(LD1_7_GPIO_Port, LD1_7_Pin, 1 & ((bits >> 0) ^ (sign)));
-	HAL_GPIO_WritePin(LD2_8_GPIO_Port, LD2_8_Pin, 1 & ((bits >> 1) ^ (sign)));
-	HAL_GPIO_WritePin(LD3_9_GPIO_Port, LD3_9_Pin, 1 & ((bits >> 2) ^ (sign)));
-	HAL_GPIO_WritePin(LD4_10_GPIO_Port, LD4_10_Pin, 1 & ((bits >> 3) ^ (sign)));
-	HAL_GPIO_WritePin(LD5_11_GPIO_Port, LD5_11_Pin, 1 & ((bits >> 4) ^ (sign)));
-	HAL_GPIO_WritePin(RA_BK_GPIO_Port, RA_BK_Pin, sign);
-}
 void LED_Go2Go(int x) {
 	HAL_GPIO_WritePin(RA_BK_GPIO_Port, RA_BK_Pin, x > 0);
 	if (x > 0) {

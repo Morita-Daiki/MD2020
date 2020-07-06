@@ -1,5 +1,4 @@
 cmsis_os.c:103:31:makeFreeRtosPriority	24	static
-cmsis_os.c:116:19:makeCmsisPriority	24	static
 cmsis_os.c:130:12:inHandlerMode	16	static,ignoring_inline_asm
 cmsis_os.c:150:10:osKernelStart	8	static
 cmsis_os.c:165:9:osKernelRunning	8	static
@@ -21,18 +20,18 @@ cmsis_os.c:597:11:osMutexCreate	16	static
 cmsis_os.c:626:10:osMutexWait	24	static
 cmsis_os.c:666:10:osMutexRelease	24	static
 cmsis_os.c:690:10:osMutexDelete	16	static
-cmsis_os.c:712:15:osSemaphoreCreate	32	static
+cmsis_os.c:712:15:osSemaphoreCreate	24	static
 cmsis_os.c:779:9:osSemaphoreWait	24	static
 cmsis_os.c:819:10:osSemaphoreRelease	24	static
 cmsis_os.c:846:10:osSemaphoreDelete	16	static
-cmsis_os.c:883:10:osPoolCreate	32	static
+cmsis_os.c:883:10:osPoolCreate	16	static
 cmsis_os.c:936:7:osPoolAlloc	32	static
 cmsis_os.c:977:7:osPoolCAlloc	24	static
 cmsis_os.c:996:10:osPoolFree	24	static
 cmsis_os.c:1040:14:osMessageCreate	32	static
 cmsis_os.c:1067:10:osMessagePut	32	static
 cmsis_os.c:1099:9:osMessageGet	56	static
-cmsis_os.c:1168:11:osMailCreate	40	static
+cmsis_os.c:1168:11:osMailCreate	16	static
 cmsis_os.c:1214:7:osMailAlloc	24	static
 cmsis_os.c:1236:7:osMailCAlloc	24	static
 cmsis_os.c:1257:10:osMailPut	24	static

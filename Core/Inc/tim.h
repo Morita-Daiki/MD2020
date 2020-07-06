@@ -43,7 +43,9 @@ void MX_TIM3_Init(void);
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                     
 /* USER CODE BEGIN Prototypes */
-void PWM_4_Out(int *);
+void PWM_4_Out(int *duty);
+void Enc_Start();
+uint32_t Enc_Read();
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
