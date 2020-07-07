@@ -48,7 +48,7 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 static uint32_t enc_cnt;
-
+static uint32_t duty[4]={0,333,666,999};
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 uint32_t defaultTaskBuffer[ 100 ];
@@ -161,11 +161,10 @@ void StartControl(void const * argument)
 	Enc_Start(); //init encoder
 	/* Infinite loop */
 	for (;;) {
-		vTaskDelayUntil(&pxPreviousWakeTime, 1);
+		vTaskDelayUntil(&pxPreviousWakeTime, 5);
 		enc_cnt = Enc_Read();
-		uint16_t duty[4]={2399,2399,2000,2000};
 		PWM_4_Out(duty);
-		HAL_GPIO_TogglePin(PA15_GPIO_Port, PA15_Pin|PA2_Pin);
+//		HAL_GPIO_TogglePin(PA15_GPIO_Port, PA15_Pin|PA2_Pin);
 //		HAL_GPIO_TogglePin(PA2_GPIO_Port, PA2_Pin);
 //		osDelay(1);
 	}
