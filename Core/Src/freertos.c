@@ -26,7 +26,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
-
+#include "tim.h"
+#include "gpio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -162,7 +163,7 @@ void StartControl(void const * argument)
 	for (;;) {
 		vTaskDelayUntil(&pxPreviousWakeTime, 1);
 		enc_cnt = Enc_Read();
-		uint16_t duty[4]={0,1200,2400,Enc_Read()%2400};
+		uint16_t duty[4]={2399,2399,2000,2000};
 		PWM_4_Out(duty);
 		HAL_GPIO_TogglePin(PA15_GPIO_Port, PA15_Pin|PA2_Pin);
 //		HAL_GPIO_TogglePin(PA2_GPIO_Port, PA2_Pin);
