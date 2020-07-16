@@ -71,8 +71,8 @@ void MX_TIM3_Init(void) {
 
 	htim3.Instance = TIM3;
 	htim3.Init.Prescaler = 0;
-	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim3.Init.Period = 1000 - 1;
+	htim3.Init.CounterMode = TIM_COUNTERMODE_CENTERALIGNED1;
+	htim3.Init.Period = 999;//24kHz
 	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
 	if (HAL_TIM_Base_Init(&htim3) != HAL_OK) {
@@ -246,29 +246,44 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef *tim_baseHandle) {
 //			Error_Handler();
 //	}
 //}
+void PWM_Start() {
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+}
 void Duty_Out(double duty_persentage) {
-	sConfigOC.Pulse = (0 < duty_persentage) * duty_persentage
-			* htim3.Init.Period; //正なら最大＊パーセント左サイド
-	if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC,
-	TIM_CHANNEL_1 | TIM_CHANNEL_2) != HAL_OK)
-		Error_Handler();
-	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1 | TIM_CHANNEL_2) != HAL_OK)
-		Error_Handler();
+	uint32_t Pulse = (0 < duty_persentage) * (1.0-duty_persentage) * PWM_PERIOD; //正なら最大??��?��パ�?�セント左サイ?��?
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Pulse);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Pulse+80);
 
-	sConfigOC.Pulse = (duty_persentage < 0) * -duty_persentage
-			* htim3.Init.Period;//負なら最大＊ーパーセント右サイド
-	if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC,
-	TIM_CHANNEL_3 | TIM_CHANNEL_4) != HAL_OK)
-		Error_Handler();
-	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3 | TIM_CHANNEL_4) != HAL_OK)
-		Error_Handler();
+	//	if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+//		Error_Handler();
+////	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1) != HAL_OK)
+////		Error_Handler();
+//	if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+//		Error_Handler();
+////	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2) != HAL_OK)
+////		Error_Handler();
+
+	Pulse = (duty_persentage < 0) * (1.0+duty_persentage) * PWM_PERIOD; //?��?なら最大??��?��?��??��パ�??��セント右サイ?��?
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, Pulse);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, Pulse+80);
+	//	if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+//		Error_Handler();
+////	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3) != HAL_OK)
+////		Error_Handler();
+//	if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+//		Error_Handler();
+//	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_ALL) != HAL_OK)
+//		Error_Handler();
 }
 void Enc_Start() {
 	HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
-	TIM2->CNT=0x7fffffff;
+	TIM2->CNT = 0x7fffffff;
 }
-uint32_t Enc_Read() {//4294967295cnt /2(±) /18(枚) /4(逓倍)　/6000(rpm) =4971(min) 計測可
-	return TIM2->CNT-0x7fffffff;
+int32_t Enc_Read() { //4294967295cnt /2(±) /18(?��?) /4(逓�??)?��?/6000(rpm) =4971(min) 計測可
+	return TIM2->CNT - 0x7fffffff;
 }
 
 /* USER CODE END 1 */
