@@ -34,7 +34,7 @@ extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN Private defines */
-
+#define PWM_PERIOD 999
 /* USER CODE END Private defines */
 
 void MX_TIM2_Init(void);
@@ -44,9 +44,10 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                     
 /* USER CODE BEGIN Prototypes */
 //void PWM_4_Out(uint32_t *duty);
+void PWM_Start();
 void Duty_Out(double);
 void Enc_Start();
-uint32_t Enc_Read();
+int32_t Enc_Read();
 
 //double Enc_Read_cps();
 /* USER CODE END Prototypes */
