@@ -32,5 +32,5 @@ void get_pos();
 void get_vel();
 
 void control();
-
+float get_vel_cmd();
 #endif /* INC_CONTROL_H_ */
