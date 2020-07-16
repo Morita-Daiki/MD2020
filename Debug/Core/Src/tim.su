@@ -5,6 +5,7 @@ tim.c:146:6:HAL_TIM_Base_MspInit	24	static
 tim.c:163:6:HAL_TIM_MspPostInit	56	static
 tim.c:200:6:HAL_TIM_Encoder_MspDeInit	16	static
 tim.c:221:6:HAL_TIM_Base_MspDeInit	16	static
-tim.c:249:6:Duty_Out	32	static
-tim.c:266:6:Enc_Start	8	static
-tim.c:270:10:Enc_Read	8	static
+tim.c:249:6:PWM_Start	8	static
+tim.c:255:6:Duty_Out	32	static
+tim.c:281:6:Enc_Start	8	static
+tim.c:285:9:Enc_Read	8	static

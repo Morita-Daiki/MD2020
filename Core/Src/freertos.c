@@ -25,10 +25,11 @@
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
+/* USER CODE BEGIN Includes */     
 #include "tim.h"
 #include "gpio.h"
 #include "math.h"
+#include "control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,10 +51,10 @@
 /* USER CODE BEGIN Variables */
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
-uint32_t defaultTaskBuffer[100];
+uint32_t defaultTaskBuffer[ 100 ];
 osStaticThreadDef_t defaultTaskControlBlock;
 osThreadId ControlHandle;
-uint32_t myTask02Buffer[100];
+uint32_t myTask02Buffer[ 100 ];
 osStaticThreadDef_t myTask02ControlBlock;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -61,14 +62,13 @@ osStaticThreadDef_t myTask02ControlBlock;
 
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void const *argument);
-void StartControl(void const *argument);
+void StartDefaultTask(void const * argument);
+void StartControl(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-		StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize);
+void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
 
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
@@ -84,45 +84,43 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
 /* USER CODE END GET_IDLE_TASK_MEMORY */
 
 /**
- * @brief  FreeRTOS initialization
- * @param  None
- * @retval None
- */
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
 void MX_FREERTOS_Init(void) {
-	/* USER CODE BEGIN Init */
+  /* USER CODE BEGIN Init */
 
-	/* USER CODE END Init */
+  /* USER CODE END Init */
 
-	/* USER CODE BEGIN RTOS_MUTEX */
+  /* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
-	/* USER CODE END RTOS_MUTEX */
+  /* USER CODE END RTOS_MUTEX */
 
-	/* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
-	/* USER CODE END RTOS_SEMAPHORES */
+  /* USER CODE END RTOS_SEMAPHORES */
 
-	/* USER CODE BEGIN RTOS_TIMERS */
+  /* USER CODE BEGIN RTOS_TIMERS */
 	/* start timers, add new ones, ... */
-	/* USER CODE END RTOS_TIMERS */
+  /* USER CODE END RTOS_TIMERS */
 
-	/* USER CODE BEGIN RTOS_QUEUES */
+  /* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
-	/* USER CODE END RTOS_QUEUES */
+  /* USER CODE END RTOS_QUEUES */
 
-	/* Create the thread(s) */
-	/* definition and creation of defaultTask */
-	osThreadStaticDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 100,
-			defaultTaskBuffer, &defaultTaskControlBlock);
-	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  /* Create the thread(s) */
+  /* definition and creation of defaultTask */
+  osThreadStaticDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 100, defaultTaskBuffer, &defaultTaskControlBlock);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-	/* definition and creation of Control */
-	osThreadStaticDef(Control, StartControl, osPriorityRealtime, 0, 100,
-			myTask02Buffer, &myTask02ControlBlock);
-	ControlHandle = osThreadCreate(osThread(Control), NULL);
+  /* definition and creation of Control */
+  osThreadStaticDef(Control, StartControl, osPriorityRealtime, 0, 100, myTask02Buffer, &myTask02ControlBlock);
+  ControlHandle = osThreadCreate(osThread(Control), NULL);
 
-	/* USER CODE BEGIN RTOS_THREADS */
+  /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
-	/* USER CODE END RTOS_THREADS */
+  /* USER CODE END RTOS_THREADS */
 
 }
 
@@ -133,15 +131,16 @@ void MX_FREERTOS_Init(void) {
  * @retval None
  */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const *argument) {
-	/* USER CODE BEGIN StartDefaultTask */
+void StartDefaultTask(void const * argument)
+{
+  /* USER CODE BEGIN StartDefaultTask */
 	TickType_t xPreviousWakeTime = xTaskGetTickCount();
 	/* Infinite loop */
 	for (;;) {
 		vTaskDelayUntil(&xPreviousWakeTime, 100); //10k/100=100Hz
-
+		LED_Go2Go(get_vel_cmd());
 	}
-	/* USER CODE END StartDefaultTask */
+  /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_StartControl */
@@ -151,16 +150,18 @@ void StartDefaultTask(void const *argument) {
  * @retval None
  */
 /* USER CODE END Header_StartControl */
-void StartControl(void const *argument) {
-	/* USER CODE BEGIN StartControl */
+void StartControl(void const * argument)
+{
+  /* USER CODE BEGIN StartControl */
 	TickType_t pxPreviousWakeTime = xTaskGetTickCount();
 	Enc_Start(); //init encoder
+	PWM_Start();
 	/* Infinite loop */
 	for (;;) {
-		vTaskDelayUntil(&pxPreviousWakeTime, 1); //10k/5=2kHz
-
+		vTaskDelayUntil(&pxPreviousWakeTime, 2); //10k/2=5kHz=0.0002s
+		control();
 	}
-	/* USER CODE END StartControl */
+  /* USER CODE END StartControl */
 }
 
 /* Private application code --------------------------------------------------*/
