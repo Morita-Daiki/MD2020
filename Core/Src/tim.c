@@ -268,7 +268,7 @@ void Enc_Start() {
 	TIM2->CNT=0x7fffffff;
 }
 uint32_t Enc_Read() {//4294967295cnt /2(±) /18(枚) /4(逓倍)　/6000(rpm) =4971(min) 計測可
-	return TIM2->CNT;
+	return TIM2->CNT-0x7fffffff;
 }
 
 /* USER CODE END 1 */
