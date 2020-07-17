@@ -72,7 +72,7 @@ void MX_TIM3_Init(void) {
 	htim3.Instance = TIM3;
 	htim3.Init.Prescaler = 0;
 	htim3.Init.CounterMode = TIM_COUNTERMODE_CENTERALIGNED1;
-	htim3.Init.Period = 999;//24kHz
+	htim3.Init.Period = PWM_PERIOD; //24kHz
 	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
 	if (HAL_TIM_Base_Init(&htim3) != HAL_OK) {
@@ -253,10 +253,21 @@ void PWM_Start() {
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 }
 void Duty_Out(double duty_persentage) {
-	uint32_t Pulse = (0 < duty_persentage) * (1.0-duty_persentage) * PWM_PERIOD; //正なら最大??��?��パ�?�セント左サイ?��?
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Pulse);
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Pulse+80);
-
+	if (duty_persentage >= 0) {
+		uint32_t Pulse = (duty_persentage) * PWM_PERIOD; //正なら最大??��?��パ�?�セント左サイ?��?
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Pulse);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Pulse + 80);
+		Pulse = 0;
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, Pulse);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, Pulse);
+	} else { //マイナス
+		uint32_t Pulse = (-duty_persentage) * PWM_PERIOD; //正なら最大??��?��パ�?�セント左サイ?��?
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, Pulse);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, Pulse + 80);
+		Pulse = 0;
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Pulse);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Pulse);
+	}
 	//	if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
 //		Error_Handler();
 ////	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1) != HAL_OK)
@@ -266,9 +277,9 @@ void Duty_Out(double duty_persentage) {
 ////	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2) != HAL_OK)
 ////		Error_Handler();
 
-	Pulse = (duty_persentage < 0) * (1.0+duty_persentage) * PWM_PERIOD; //?��?なら最大??��?��?��??��パ�??��セント右サイ?��?
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, Pulse);
-	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, Pulse+80);
+//	Pulse = (duty_persentage < 0) * (1.0 + duty_persentage) * PWM_PERIOD; //?��?なら最大??��?��?��??��パ�??��セント右サイ?��?
+//	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, Pulse);
+//	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, Pulse + 80);
 	//	if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
 //		Error_Handler();
 ////	if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3) != HAL_OK)

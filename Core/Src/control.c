@@ -82,7 +82,7 @@ void control() {
 //	CurCmd = CurrentRef;
 	VoltageRef = AccelerationRef;//CurCmd * Rn;
 	Duty_Out(constrain(VoltageRef / 12, -0.9, 0.9));
-//	Duty_Out(-0.3);
+//	Duty_Out(0.3);
 //	setMotorVoltage(VoltageRef);
 }
 float get_vel_cmd() {
