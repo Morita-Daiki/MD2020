@@ -6,6 +6,6 @@ tim.c:67:6:MX_TIM3_Init	16	static
 tim.c:200:6:HAL_TIM_Encoder_MspDeInit	8	static
 tim.c:221:6:HAL_TIM_Base_MspDeInit	8	static
 tim.c:249:6:PWM_Start	8	static
-tim.c:255:6:Duty_Out	32	static
-tim.c:281:6:Enc_Start	8	static
-tim.c:285:10:Enc_Read	0	static
+tim.c:255:6:Duty_Out	24	static
+tim.c:292:6:Enc_Start	8	static
+tim.c:296:9:Enc_Read	0	static

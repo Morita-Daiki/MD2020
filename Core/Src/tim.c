@@ -256,14 +256,14 @@ void Duty_Out(double duty_persentage) {
 	if (duty_persentage >= 0) {
 		uint32_t Pulse = (duty_persentage) * PWM_PERIOD; //正なら最大??��?��パ�?�セント左サイ?��?
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Pulse);
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Pulse + 80);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Pulse + 0);
 		Pulse = 0;
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, Pulse);
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, Pulse);
 	} else { //マイナス
 		uint32_t Pulse = (-duty_persentage) * PWM_PERIOD; //正なら最大??��?��パ�?�セント左サイ?��?
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, Pulse);
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, Pulse + 80);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, Pulse + 0);
 		Pulse = 0;
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Pulse);
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Pulse);

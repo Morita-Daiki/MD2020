@@ -44,7 +44,7 @@ void get_vel() {
 	float dtheta = PosRes - PosLast;
 	float spendtime = TimeNow - TimeLast;
 
-	if (abs(dtheta) > M_PI) { //　±180度以上
+	if (abs(dtheta) > M_PI_4) { //　±45度以上
 		VelRes = dtheta / spendtime; //　速度更新
 		PosLast = PosRes; //　位置更新
 		TimeLast = TimeNow; //　過去時間更新
@@ -60,16 +60,16 @@ void control() {
 	get_pos(); //　位置更新
 	get_vel(); //　速度更新
 
-//	PosCmd = M_PI * sinf(TimeNow * M_PI_4); //8sで±180度
-//	VelCmd = M_PI * M_PI_4 * cosf(TimeNow * M_PI_4);
+	PosCmd = 31.4 * sinf(TimeNow * M_PI); //2sで±10pirad=+-1800deg
+	VelCmd = 31.4 * M_PI* sinf(TimeNow * M_PI+M_PI_2);
 //	PosCmd = TimeNow;
 //	PosCmd=100.0;
 //	VelCmd = 10;
 
 	//　位置制御モード
 	PosErr = PosCmd - PosRes; //　位置偏差
-	if (abs(PosErr) < M_PI)  //残り半周以内なら
-		VelCmd = PosErr * vel_pos_gain; //　残角度に比例した速度
+//	if (abs(PosErr) < M_PI)  //残り半周以内なら
+//		VelCmd = PosErr * vel_pos_gain; //　残角度に比例した速度
 
 	VelErr = VelCmd - VelRes; //　速度偏差
 	PosErrInt += PosErr * dt_major; // 積分成分
@@ -81,7 +81,7 @@ void control() {
 //	CurrentRef = AccelerationRef * Acceleration2Current;
 //	CurCmd = CurrentRef;
 	VoltageRef = AccelerationRef;//CurCmd * Rn;
-	Duty_Out(constrain(VoltageRef / 12, -0.9, 0.9));
+	Duty_Out(constrain(VoltageRef / 12, -0.5, 0.5));
 //	Duty_Out(0.3);
 //	setMotorVoltage(VoltageRef);
 }

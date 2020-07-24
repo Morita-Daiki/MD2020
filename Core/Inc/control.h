@@ -23,9 +23,9 @@
 
 /************ Default constol parameters *************/
 // Position control gains
-#define Kp_p_DEFAULT    4900.0f     ///< Proportional gain of position control [s^2]
-#define Ki_p_DEFAULT    6000.0f     ///< Integral     gain of position control [s^3]
-#define Kd_p_DEFAULT    140.0f      ///< Differential gain of position control [s]
+#define Kp_p_DEFAULT    2.0f     ///< Proportional gain of position control [s^2]
+#define Ki_p_DEFAULT    1.0f     ///< Integral     gain of position control [s^3]
+#define Kd_p_DEFAULT    0.0f      ///< Differential gain of position control [s]
 
 void get_time();
 void get_pos();

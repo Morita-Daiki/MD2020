@@ -1,5 +1,5 @@
-control.c:31:6:get_time	8	static
-control.c:37:6:get_pos	8	static
-control.c:40:6:get_vel	32	static
-control.c:57:6:control	24	static
-control.c:86:7:get_vel_cmd	0	static
+control.c:32:6:get_time	8	static
+control.c:38:6:get_pos	8	static
+control.c:41:6:get_vel	32	static
+control.c:58:6:control	24	static
+control.c:88:7:get_vel_cmd	0	static

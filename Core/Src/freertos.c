@@ -138,7 +138,8 @@ void StartDefaultTask(void const * argument)
 	/* Infinite loop */
 	for (;;) {
 		vTaskDelayUntil(&xPreviousWakeTime, 100); //10k/100=100Hz
-		LED_Go2Go(get_vel_cmd());
+		LED_Go2Go(get_vel_cmd()/20.0);
+//		osDelay(10);
 	}
   /* USER CODE END StartDefaultTask */
 }
@@ -158,7 +159,7 @@ void StartControl(void const * argument)
 	PWM_Start();
 	/* Infinite loop */
 	for (;;) {
-		vTaskDelayUntil(&pxPreviousWakeTime, 2); //10k/2=5kHz=0.0002s
+		vTaskDelayUntil(&pxPreviousWakeTime, 5); //10k/2=5kHz=0.0002s
 		control();
 	}
   /* USER CODE END StartControl */
